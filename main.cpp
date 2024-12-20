@@ -1,21 +1,56 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Window.hpp>
+#include <SFML/Window/Window.hpp>
+#include <algorithm>
+#include <cmath>
 #include <iostream>
 
+// Function to check if two objects are colliding.
+int collisionCheck(sf::RectangleShape o1, sf::CircleShape o2, float w , float h, float r)
+{
+    // Finding closest point of rectriangle to circles center
+    int rec_x = o1.getPosition().x; 
+    int cir_x = o2.getPosition().x;
 
-const float g = 2000.81f;   
-const float initialHeight = 500.0f;  
+    // Calculateing the distance between the ball's center and the closest point on rectriangle
+    
+    int rec_y = o1.getPosition().y;
+    int cir_y = o2.getPosition().y;
+
+    int closest_x = fmax(rec_x, fmin(cir_x, rec_x + w));
+    int closest_y = fmax(rec_y, fmin(cir_x, rec_y + h));
+
+    float distance_x = cir_x- closest_x;
+    float distance_y = cir_y- closest_y;
+    float distance = sqrt((pow(distance_x,2 )  + pow(distance_y,2 ) ));
+
+    // Check if the distance is less than or equal to the ball's radius
+    return distance <= r;
+}
+
+const float g = 2000.81f;   // accleration due to gravity
+const float initialHeight = 500.0f;  // height of ball
 const float ballRadius = 20.0f;  // Radius of the ball 
-const float initialVelocity = 200.0f;  
+const float initialVelocity = 200.0f;  //initial velocity of ball
+
 
 
 int main() {
 
     sf::RenderWindow window(sf::VideoMode(800, 600), "Fall");
 
+      sf::RectangleShape rectangle(sf::Vector2f(400, 20));
+    rectangle.setPosition(((window.getSize().x)/2)-200, (window.getSize().y)-180);
+    rectangle.setFillColor( sf::Color::Red);
+
     sf::CircleShape ball(ballRadius);
     ball.setFillColor(sf::Color::Red);
     ball.setPosition(400 - ballRadius, initialHeight);  // Start in the middle
+   
+  
+
 
     // Initial conditions
     float velocity = initialVelocity;  // Initial velocity (pixels/s)
@@ -39,13 +74,16 @@ int main() {
 
         // Update the velocity and height due to gravity
         velocity += g * dt;  // v = u + g * t
-        height += velocity * dt;  // h = h0 + v * t
+        height += velocity * dt;  // h = h(Initial) + v * t
 
         // If the ball hits the ground, stop it
         if (height + ballRadius >= window.getSize().y) {
-            height = window.getSize().y - ballRadius;  // Prevent ball from going below the ground
-            velocity = -500;  // Stop the ball (simulating a bounce on the ground)
+            //height = window.getSize().y - (ballRadius);  // Prevent ball from going below the ground
+            velocity = 0;  // Stop the ball (simulating a bounce on the ground)
         }
+        
+        // Check collision
+        std::cout << collisionCheck(rectangle, ball, 800, 600, ballRadius);
 
         // Set the ball's position based on the height
         ball.setPosition(400 - ballRadius, height);
@@ -55,6 +93,7 @@ int main() {
 
         // Draw the ball
         window.draw(ball);
+        window.draw(rectangle);
 
         // Display the content of the window
         window.display();
