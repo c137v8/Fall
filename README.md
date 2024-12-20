@@ -1,1 +1,7 @@
-To show gravity
+Project to show gravity.
+
+Features:
+Collision detection.
+
+
+
