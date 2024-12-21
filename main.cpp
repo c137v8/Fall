@@ -39,7 +39,7 @@ const float initialVelocity = 200.0f;  //initial velocity of ball
 
 int main() {
 
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Fall");
+    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Fall");
 
       sf::RectangleShape rectangle(sf::Vector2f(400, 20));
     rectangle.setPosition(((window.getSize().x)/2)-200, (window.getSize().y)-180);
@@ -55,8 +55,6 @@ int main() {
     // Initial conditions
     float velocity = initialVelocity;  // Initial velocity (pixels/s)
     float height = initialHeight;  // Initial height (pixels)
-    float time = 0.0f;  // Time in seconds
-    float dt = 0.01f;  // Time step for the simulation
 
     // Clock to control frame rate
     sf::Clock clock;
