@@ -93,8 +93,10 @@ int main() {
         {
              
    
-            velocity = 0 ;
-            height = c.closest_y - 40;
+            if (velocity > 0)
+            {
+                velocity = -velocity;
+            } 
           
         }
 
