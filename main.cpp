@@ -3,6 +3,7 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Window/Window.hpp>
+#include <SFML/Audio.hpp>
 #include <algorithm>
 #include <cmath>
 #include <iostream>
@@ -64,8 +65,15 @@ int main() {
     ball.setFillColor(sf::Color::Red);
     ball.setPosition(400 - ballRadius, initialHeight);  // Start in the middle
    
-  
+   // Inisilizing sound file 
+sf::SoundBuffer buffer;
+    if (!buffer.loadFromFile("kick23.wav")) {
+        std::cerr << "Error: Could not load sound file!" << std::endl;
+        return -1;
+    }
 
+    sf::Sound sound;
+    sound.setBuffer(buffer);
 
     // Initial conditions
     float velocity = initialVelocity;  // Initial velocity (pixels/s)
@@ -96,7 +104,10 @@ int main() {
             if (velocity > 0)
             {
                 velocity = -velocity;
+                 sound.play();    
+                
             } 
+          
           
         }
 
