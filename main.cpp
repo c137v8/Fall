@@ -7,20 +7,36 @@
 #include <cmath>
 #include <iostream>
 
-// Function to check if two objects are colliding.
-int collisionCheck(sf::RectangleShape o1, sf::CircleShape o2, float w , float h, float r)
+class collision
 {
-    // Finding closest point of rectriangle to circles center
-    int rec_x = o1.getPosition().x; 
-    int cir_x = o2.getPosition().x;
+
+public:
+    int rec_x  ; 
+    int cir_x ;
 
     // Calculateing the distance between the ball's center and the closest point on rectriangle
     
-    int rec_y = o1.getPosition().y;
-    int cir_y = o2.getPosition().y;
+    int rec_y ;
+    int cir_y  ;
 
-    int closest_x = fmax(rec_x, fmin(cir_x, rec_x + w));
-    int closest_y = fmax(rec_y, fmin(cir_x, rec_y + h));
+    int closest_x ;
+    int closest_y ;
+
+// Function to check if two objects are colliding.
+int collisionCheck(sf::RectangleShape o1, sf::CircleShape o2, float w , float h, float r)
+{
+    
+    // Finding closest point of rectriangle to circles center
+     rec_x = o1.getPosition().x; 
+     cir_x = o2.getPosition().x;
+
+    // Calculateing the distance between the ball's center and the closest point on rectriangle
+    
+     rec_y = o1.getPosition().y;
+     cir_y = o2.getPosition().y;
+
+     closest_x = fmax(rec_x, fmin(cir_x, rec_x + w));
+     closest_y = fmax(rec_y, fmin(cir_x, rec_y + h));
 
     float distance_x = cir_x- closest_x;
     float distance_y = cir_y- closest_y;
@@ -29,13 +45,12 @@ int collisionCheck(sf::RectangleShape o1, sf::CircleShape o2, float w , float h,
     // Check if the distance is less than or equal to the ball's radius
     return distance <= r;
 }
-
+};
 const float g = 2000.81f;   // accleration due to gravity
 const float initialHeight = 500.0f;  // height of ball
 const float ballRadius = 20.0f;  // Radius of the ball 
 const float initialVelocity = 200.0f;  //initial velocity of ball
-
-
+collision c;
 
 int main() {
 
@@ -74,6 +89,15 @@ int main() {
         velocity += g * dt;  // v = u + g * t
         height += velocity * dt;  // h = h(Initial) + v * t
 
+        if (c.collisionCheck(rectangle, ball, 800, 600, ballRadius))
+        {
+             
+   
+            velocity = 0 ;
+            height = c.closest_y - 40;
+          
+        }
+
         // If the ball hits the ground, stop it
         if (height + ballRadius >= window.getSize().y) {
             //height = window.getSize().y - (ballRadius);  // Prevent ball from going below the ground
@@ -81,7 +105,6 @@ int main() {
         }
         
         // Check collision
-        std::cout << collisionCheck(rectangle, ball, 800, 600, ballRadius);
 
         // Set the ball's position based on the height
         ball.setPosition(400 - ballRadius, height);
