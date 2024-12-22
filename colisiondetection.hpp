@@ -1,11 +1,7 @@
 
-#include <SFML/Graphics.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Window/Window.hpp>
 #include <SFML/Audio.hpp>
-#include <algorithm>
 #include <cmath>
 namespace col{
 
