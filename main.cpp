@@ -4,69 +4,33 @@
 #include <SFML/Window.hpp>
 #include <SFML/Window/Window.hpp>
 #include <SFML/Audio.hpp>
-#include <algorithm>
 #include <cmath>
 #include <iostream>
+#include "colisiondetection.hpp"
 
-class collision
-{
 
-public:
-    int rec_x  ; 
-    int cir_x ;
-
-    // Calculateing the distance between the ball's center and the closest point on rectriangle
-    
-    int rec_y ;
-    int cir_y  ;
-
-    int closest_x ;
-    int closest_y ;
-
-// Function to check if two objects are colliding.
-int collisionCheck(sf::RectangleShape o1, sf::CircleShape o2, float w , float h, float r)
-{
-    
-    // Finding closest point of rectriangle to circles center
-     rec_x = o1.getPosition().x; 
-     cir_x = o2.getPosition().x;
-
-    // Calculateing the distance between the ball's center and the closest point on rectriangle
-    
-     rec_y = o1.getPosition().y;
-     cir_y = o2.getPosition().y;
-
-     closest_x = fmax(rec_x, fmin(cir_x, rec_x + w));
-     closest_y = fmax(rec_y, fmin(cir_x, rec_y + h));
-
-    float distance_x = cir_x- closest_x;
-    float distance_y = cir_y- closest_y;
-    float distance = sqrt((pow(distance_x,2 )  + pow(distance_y,2 ) ));
-
-    // Check if the distance is less than or equal to the ball's radius
-    return distance <= r;
-}
-};
-const float g = 2000.81f;   // accleration due to gravity
-const float initialHeight = 500.0f;  // height of ball
+const float g = 2000.81f;   // Accleration due to gravity
+const float initialHeight = 500.0f;  // Initial height of ball
 const float ballRadius = 20.0f;  // Radius of the ball 
-const float initialVelocity = 200.0f;  //initial velocity of ball
-collision c;
+const float initialVelocity = 200.0f;  // Initial velocity of ball
+col::collision c; // Colision detection object
 
 int main() {
-
+    // Render the window
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Fall");
 
-      sf::RectangleShape rectangle(sf::Vector2f(400, 20));
+    // Create a rectangle
+    sf::RectangleShape rectangle(sf::Vector2f(400, 20));
     rectangle.setPosition(((window.getSize().x)/2)-200, (window.getSize().y)-180);
     rectangle.setFillColor( sf::Color::Red);
-
+    
+    // Create a ball
     sf::CircleShape ball(ballRadius);
     ball.setFillColor(sf::Color::Red);
     ball.setPosition(400 - ballRadius, initialHeight);  // Start in the middle
    
    // Inisilizing sound file 
-sf::SoundBuffer buffer;
+    sf::SoundBuffer buffer;
     if (!buffer.loadFromFile("kick23.wav")) {
         std::cerr << "Error: Could not load sound file!" << std::endl;
         return -1;
@@ -82,6 +46,9 @@ sf::SoundBuffer buffer;
     // Clock to control frame rate
     sf::Clock clock;
 
+
+
+    // Main loop to render the window
     while (window.isOpen()) {
         sf::Time deltaTime = clock.restart();  // Time between frames
         float dt = deltaTime.asSeconds();  // Convert to seconds
@@ -103,7 +70,7 @@ sf::SoundBuffer buffer;
    
             if (velocity > 0)
             {
-                velocity = -velocity;
+                velocity = -(velocity);
                  sound.play();    
                 
             } 
@@ -113,7 +80,7 @@ sf::SoundBuffer buffer;
 
         // If the ball hits the ground, stop it
         if (height + ballRadius >= window.getSize().y) {
-            //height = window.getSize().y - (ballRadius);  // Prevent ball from going below the ground
+            height = window.getSize().y - (ballRadius);  // Prevent ball from going below the ground
             velocity = 0;  // Stop the ball (simulating a bounce on the ground)
         }
         
