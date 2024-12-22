@@ -1,10 +1,6 @@
 #include <SFML/Graphics.hpp>
-#include <SFML/Graphics/CircleShape.hpp>
-#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Window/Window.hpp>
-#include <SFML/Audio.hpp>
-#include <cmath>
 #include <iostream>
 #include "colisiondetection.hpp"
 
@@ -17,8 +13,8 @@ col::collision c; // Colision detection object
 
 int main() {
     // Render the window
-    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Fall");
 
+    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Fall");
     // Create a rectangle
     sf::RectangleShape rectangle(sf::Vector2f(400, 20));
     rectangle.setPosition(((window.getSize().x)/2)-200, (window.getSize().y)-180);
