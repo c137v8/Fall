@@ -9,18 +9,9 @@ class collision
 {
 
 public:
-    float rec_x  ; 
-    float cir_x ;
 
-    // Calculateing the distance between the ball's center and the closest point on rectriangle
-    
-    float rec_y ;
-    float cir_y  ;
-
-    float closest_x ;
-    float closest_y ;
-   
-
+float closest_x;
+float closest_y;
 // Function to check if two objects are colliding.
 int collisionCheck(const sf::RectangleShape& o1, const sf::CircleShape& o2)
 {
@@ -28,14 +19,14 @@ int collisionCheck(const sf::RectangleShape& o1, const sf::CircleShape& o2)
     float h = o1.getSize().y;
 
     // Finding closest point of rectriangle to circles center
-     rec_x = o1.getPosition().x; 
-     cir_x = o2.getPosition().x;
+     float rec_x = o1.getPosition().x; 
+     float cir_x = o2.getPosition().x;
     float r = o2.getRadius();
 
     // Calculateing the distance between the ball's center and the closest point on rectriangle
     
-     rec_y = o1.getPosition().y;
-     cir_y = o2.getPosition().y;
+     float rec_y = o1.getPosition().y;
+     float cir_y = o2.getPosition().y;
     
      closest_x = fmax(rec_x, fmin(cir_x, rec_x + w));
      closest_y = fmax(rec_y, fmin(cir_y, rec_y + h));

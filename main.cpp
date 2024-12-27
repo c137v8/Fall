@@ -5,6 +5,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Window/Window.hpp>
 #include <iostream>
+#include <SFML/Window/Keyboard.hpp>
 #include "colisiondetection.hpp"
 class ball : public  sf::CircleShape
 {
@@ -31,6 +32,8 @@ const float g = 2000.81f;   // Accleration due to gravity
 const float initialHeight = 500.0f;  // Initial height of ball
 const float ballRadius = 20.0f;  // Radius of the ball 
 const float initialVelocity = 200.0f;  // Initial velocity of ball
+float velocityx = 0;
+float accx = 100;
 col::collision c; // Colision detection object
 
 
@@ -39,7 +42,7 @@ int main() {
 
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Fall");
     rfloor f1(40,200,200,700);
-    ball b2(20,00,initialHeight);
+    ball b2(20,400,initialHeight);
    // Inisilizing sound file 
     sf::SoundBuffer buffer;
     if (!buffer.loadFromFile("kick23.wav")) {
@@ -93,10 +96,31 @@ int main() {
             height = window.getSize().y - (ballRadius);  // Prevent ball from going below the ground
             velocity = 0;  // Stop the ball (simulating a bounce on the ground)
         }
+        float xx = b2.getPosition().x;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
+       velocityx -= accx* dt;  // v = u + g * t
         
+         xx -= 1000 * dt;  // h = h(Initial) + v * t
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
+       {
+       velocityx += accx* dt;  // v = u + g * t
+        
+         xx += 1000 * dt;  // h = h(Initial) + v * t
+    }
+    }
+     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    {
+       {
+       height = initialHeight;
+    }
+    }
+
 
         // Set the ball's position based on the height
-        b2.setPosition(700, height);
+        b2.setPosition(xx, height);
 
         // Clear the window
         window.clear();
