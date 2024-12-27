@@ -6,21 +6,16 @@
 #include <SFML/Window/Window.hpp>
 #include <iostream>
 #include "colisiondetection.hpp"
-
-
-
 class ball : public  sf::CircleShape
 {
     public:
     ball(float radius, float x , float y )
     {
-        setFillColor(sf::Color::Red);
+        setFillColor(sf::Color::Blue);
         setRadius(radius);
         setPosition(x,y);
     }
 };
-
-
 class rfloor : public sf::RectangleShape
 {
     public:
@@ -32,7 +27,6 @@ class rfloor : public sf::RectangleShape
     setFillColor( sf::Color::Red);
    }
 };
-
 const float g = 2000.81f;   // Accleration due to gravity
 const float initialHeight = 500.0f;  // Initial height of ball
 const float ballRadius = 20.0f;  // Radius of the ball 
@@ -40,21 +34,12 @@ const float initialVelocity = 200.0f;  // Initial velocity of ball
 col::collision c; // Colision detection object
 
 
-
 int main() {
     // Render the window
 
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Fall");
-    // Create a rectangle
-    //sf::RectangleShape rectangle(sf::Vector2f(400, 20));
-    //rectangle.setPosition(((window.getSize().x)/2)-200, (window.getSize().y)-180);
-    //rectangle.setFillColor( sf::Color::Red);
-
     rfloor f1(40,200,200,700);
-    
-
-    ball b2(20,500,500);
-
+    ball b2(20,00,initialHeight);
    // Inisilizing sound file 
     sf::SoundBuffer buffer;
     if (!buffer.loadFromFile("kick23.wav")) {
@@ -68,7 +53,6 @@ int main() {
     // Initial conditions
     float velocity = initialVelocity;  // Initial velocity (pixels/s)
     float height = initialHeight;  // Initial height (pixels)
-
     // Clock to control frame rate
     sf::Clock clock;
 
@@ -88,12 +72,12 @@ int main() {
 
         // Update the velocity and height due to gravity
         velocity += g * dt;  // v = u + g * t
+        
         height += velocity * dt;  // h = h(Initial) + v * t
-
-        if (c.collisionCheck(f1, b2, 800, 600, ballRadius))
+        if (c.collisionCheck(f1, b2))
         {
              
-   
+
             if (velocity > 0)
             {
                 velocity = -(velocity);
@@ -110,14 +94,16 @@ int main() {
             velocity = 0;  // Stop the ball (simulating a bounce on the ground)
         }
         
-        // Check collision
 
         // Set the ball's position based on the height
-        b2.setPosition(400 - ballRadius, height);
+        b2.setPosition(700, height);
 
         // Clear the window
         window.clear();
-
+            sf::CircleShape debugPoint(2); // Small circle
+debugPoint.setPosition(c.closest_x, c.closest_y);
+debugPoint.setFillColor(sf::Color::Red);
+window.draw(debugPoint);
         // Draw the ball
         window.draw(f1);
         window.draw(b2);
